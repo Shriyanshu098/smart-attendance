@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           locStatus.innerText = 'Error getting location: ' + error.message;
           btnLocation.disabled = false;
         },
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
       );
     } else {
       locStatus.innerText = "Geolocation is not supported by this browser.";
