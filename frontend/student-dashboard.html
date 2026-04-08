@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | Smart Attendance</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .progress-bar-container {
+      width: 100%;
+      background-color: #E5E7EB;
+      border-radius: 999px;
+      height: 8px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 1s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gradient">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">📊 Smart Attendance</a>
+      <div class="nav-links">
+        <span id="userName" style="font-weight: 500;">Student Name</span>
+        <button id="logoutBtn" class="btn btn-secondary" style="padding: 0.5rem 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-4 pb-4">
+    <div style="margin-bottom: 2rem;">
+      <h2>My Enrolled Subjects</h2>
+      <p>Click on any subject to see detailed attendance history.</p>
+    </div>
+
+    <!-- Subject Cards Container -->
+    <div class="grid grid-cols-3 gap-6" id="subjectsContainer">
+      <!-- Subjects populated by JS -->
+    </div>
+
+    <!-- Recent Attendance Table -->
+    <h2 class="mt-4" style="margin-top: 3rem;">Recent Activity</h2>
+    <div class="table-container mb-4">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Subject</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentActivityBody">
+          <!-- Data populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="js/student.js"></script>
+</body>
+</html>

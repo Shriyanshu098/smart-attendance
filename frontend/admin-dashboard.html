@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Smart Attendance</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">📊 Smart Attendance</a>
+      <div class="nav-links">
+        <span id="userName" style="font-weight: 500;">Admin</span>
+        <button id="logoutBtn" class="btn btn-secondary" style="padding: 0.5rem 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li><a href="#" class="active" data-tab="users">User Management</a></li>
+        <li><a href="#" data-tab="subjects">Subject Management</a></li>
+        <li><a href="#" data-tab="attendance">Attendance Report</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content bg-gradient">
+      <div class="container">
+        
+        <!-- Users Tab -->
+        <div id="tab-users" class="tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Users Management</h2>
+            <button class="btn btn-primary" onclick="showUserModal()">+ Add User</button>
+          </div>
+          
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <!-- Data populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Subjects Tab -->
+        <div id="tab-subjects" class="tab-content d-none">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Subjects Management</h2>
+            <button class="btn btn-primary" onclick="showSubjectModal()">+ Add Subject</button>
+          </div>
+          
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Teacher</th>
+                  <th>Students Enrolled</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subjectsTableBody">
+                <!-- Data populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Attendance Tab -->
+        <div id="tab-attendance" class="tab-content d-none">
+          <h2>Full Attendance Report</h2>
+          <div class="card" style="margin-bottom: 2rem;">
+             <form id="filterForm" style="display: flex; gap: 1rem; align-items: flex-end;">
+               <div class="form-group" style="margin-bottom: 0;">
+                 <label class="form-label">Subject</label>
+                 <select id="filterSubject" class="form-control">
+                   <option value="">All Subjects</option>
+                 </select>
+               </div>
+               <div class="form-group" style="margin-bottom: 0;">
+                 <label class="form-label">Start Date</label>
+                 <input type="date" id="filterStart" class="form-control">
+               </div>
+               <div class="form-group" style="margin-bottom: 0;">
+                 <label class="form-label">End Date</label>
+                 <input type="date" id="filterEnd" class="form-control">
+               </div>
+               <button type="button" class="btn btn-primary" onclick="loadAttendance()">Filter</button>
+             </form>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Student Name</th>
+                  <th>Roll No</th>
+                  <th>Subject</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceTableBody">
+                <!-- Data populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- User Modal (Simplified logic, not fully styled as modal for brevity, just hidden div) -->
+  <div id="userModal" class="card d-none" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; min-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+    <h3>Add New User</h3>
+    <form id="addUserForm">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" id="addUserName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="addUserEmail" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="addUserPassword" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <select id="addUserRole" class="form-control" required>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-group" id="rollNumberGroup">
+        <label class="form-label">Roll Number</label>
+        <input type="text" id="addUserRoll" class="form-control">
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('userModal').classList.add('d-none')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save User</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Subject Modal -->
+  <div id="subjectModal" class="card d-none" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; min-width: 400px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+    <h3 id="subjectModalTitle">Manage Subject</h3>
+    <form id="manageSubjectForm">
+      <input type="hidden" id="editSubjectId">
+      <div class="form-group">
+        <label class="form-label">Subject Code</label>
+        <input type="text" id="subjectCode" class="form-control" placeholder="e.g. CS101" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject Name</label>
+        <input type="text" id="subjectName" class="form-control" placeholder="e.g. Data Structures" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assign Teacher</label>
+        <select id="teacherSelect" class="form-control">
+          <option value="">-- No Teacher Assigned --</option>
+          <!-- Teachers populated dynamically -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Enroll Students</label>
+        <div id="studentCheckboxes" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
+          <!-- Students populated dynamically -->
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('subjectModal').classList.add('d-none')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveSubjectBtn">Save Subject</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="passwordModal" class="card d-none" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; min-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+    <h3>Change User Password</h3>
+    <form id="changePasswordForm">
+      <input type="hidden" id="changePasswordUserId">
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: nowrap;">
+          <input type="password" id="newPasswordInput" class="form-control" required minlength="6" style="flex-grow: 1;">
+          <button type="button" class="btn btn-secondary" onclick="const p = document.getElementById('newPasswordInput'); p.type = p.type === 'password' ? 'text' : 'password'; this.innerText = p.type === 'password' ? 'Show' : 'Hide';" style="padding: 0 1rem;">Show</button>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('passwordModal').classList.add('d-none')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update Password</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
