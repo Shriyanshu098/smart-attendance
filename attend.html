@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark Attendance | Smart Attendance</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+    }
+
+    .attend-container {
+      width: 100%;
+      max-width: 500px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="attend-container">
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="glass-card text-center">
+      <div class="spinner spinner-primary mb-4"></div>
+      <h3>Verifying QR Code...</h3>
+      <p>Please wait while we check this session.</p>
+    </div>
+
+    <!-- Error Screen -->
+    <div id="errorScreen" class="glass-card text-center d-none">
+      <div style="font-size: 4rem; color: var(--danger); margin-bottom: 1rem;">❌</div>
+      <h2 id="errorTitle">Invalid Session</h2>
+      <p id="errorDesc" class="text-muted mb-4">This QR code is either expired or has already been used.</p>
+      <button class="btn btn-secondary" onclick="window.location.href='/index.html'">Go to Home</button>
+    </div>
+
+    <!-- Success Output Screen -->
+    <div id="successScreen" class="glass-card text-center d-none">
+      <div style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;">✅</div>
+      <h2>Attendance Marked!</h2>
+      <p>Your presence has been successfully registered.</p>
+      <div class="mt-4" style="font-size: 0.9rem; background: #F9FAFB; padding: 1rem; border-radius: 8px;">
+        <p><strong>Distance from Teacher:</strong> <span id="distValue"></span> meters</p>
+      </div>
+      <button class="btn btn-primary mt-4" onclick="window.location.href='/student-dashboard.html'">Go to
+        Dashboard</button>
+    </div>
+
+    <!-- Attendance Form Screen -->
+    <div id="formScreen" class="glass-card d-none">
+      <div class="text-center mb-4">
+        <h2>Mark Attendance</h2>
+        <p class="text-primary" style="font-weight: bold;" id="subjectNameDisplay">Subject</p>
+      </div>
+
+      <form id="attendForm">
+        <div class="form-group text-center" style="background: #F9FAFB; padding: 1rem; border-radius: 8px;">
+          <p id="userInfo" style="font-weight: bold;"></p>
+          <p class="text-muted" style="font-size: 0.85rem;" id="timeInfo"></p>
+        </div>
+
+        <div class="form-group text-center mb-4 mt-4">
+          <button type="button" id="btnGetLocation" class="btn btn-secondary btn-block">
+            📍 Share My Location
+          </button>
+          <p id="locStatus" class="text-muted mt-2" style="font-size: 0.8rem;">Location is required to mark attendance.
+          </p>
+          <input type="hidden" id="lat" required>
+          <input type="hidden" id="lng" required>
+          <input type="hidden" id="accuracy" required>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="btn btn-primary btn-block" disabled>Submit Attendance</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="js/attend.js"></script>
+</body>
+
+</html>
